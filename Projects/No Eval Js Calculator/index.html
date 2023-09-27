@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="calc">
+        <div class="screen"></div>
+        <div class="keys">
+            <section>
+                <button class="clear" onclick="calc.clear()">C</button>
+            </section>
+            <section>
+                <button onclick="calc.key(7)">7</button>
+                <button onclick="calc.key(8)">8</button>
+                <button onclick="calc.key(9)">9</button>
+            </section>
+            <section>
+                <button onclick="calc.key(4)">4</button>
+                <button onclick="calc.key(5)">5</button>
+                <button onclick="calc.key(6)">6</button>
+            </section>
+            <section>
+                <button onclick="calc.key(3)">3</button>
+                <button onclick="calc.key(2)">2</button>
+                <button onclick="calc.key(1)">1</button>
+            </section>
+            <section>
+                <button class="btZero" onclick="calc.key(0)">0</button>
+            </section>
+            <section class="symbols">
+                <button onclick="calc.keySymbols(calc.symbols[3])">/</button>
+                <button onclick="calc.keySymbols(calc.symbols[2])">*</button>
+                <button onclick="calc.keySymbols(calc.symbols[1])">-</button>
+                <button onclick="calc.keySymbols(calc.symbols[0])">+</button>
+                <button onclick="calc.result()">=</button>
+            </section>
+        </div>
+    </div>
+    <script>
+        const calc = {
+            symbols : ['+','-','*','/','='],
+            memory:[],
+            screenMemory:'',
+            key: function(numb){
+                document.querySelector('.screen').innerHTML +=numb;
+                this.screenMemory+=numb;
+                console.log('Value of screenMemory:', this.screenMemory);
+            },
+            keySymbols: function(symbol){
+                document.querySelector('.screen').innerHTML +=symbol;
+                this.memory.push(this.screenMemory);
+                this.memory.push(symbol);
+                this.screenMemory='';
+                console.log('screenMemory now:', this.screenMemory);
+                console.log('Memory', this.memory);
+            },
+            clear: function(){
+                this.memory=[];
+                this.screenMemory='';
+                document.querySelector('.screen').innerHTML='';
+            },
+
+            result: function(){
+                console.log(this.screenMemory);
+                this.memory.push(this.screenMemory);
+
+                for(i=0;i<this.memory.length;i++)
+                {
+                    if(this.memory[i]===this.symbols[0]){
+                    let res=Number(this.memory[i-1])+Number(this.memory[i+1]);
+                    document.querySelector('.screen').innerHTML=res;
+                    this.screenMemory=res;
+                    this.memory=[];
+                    console.log(this.memory);
+                    }
+                
+                else if(this.memory[i]===this.symbols[1]){
+                    let res=Number(this.memory[i-1])-Number(this.memory[i+1]);
+                    document.querySelector('.screen').innerHTML=res;
+                    this.screenMemory=res;
+                    this.memory.push(res);
+                    console.log(this.memory);
+                }
+                else  if(this.memory[i]===this.symbols[2]){
+                    let res=Number(this.memory[i-1])*Number(this.memory[i+1]);
+                    document.querySelector('.screen').innerHTML=res;
+                    this.screenMemory=res;
+                    this.memory.push(res);
+                    console.log(this.memory);
+                }
+                else if(this.memory[i]===this.symbols[3]){
+                    let res=Number(this.memory[i-1])/Number(this.memory[i+1]);
+                    document.querySelector('.screen').innerHTML=res;
+                    this.screenMemory=res;
+                    this.memory.push(res);
+                    console.log(this.memory);
+                }
+            }
+        }
+
+        }
+    </script>
+</body>
+
+</html>
